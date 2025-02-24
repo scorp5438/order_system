@@ -1,0 +1,33 @@
+name: Order check
+
+on:
+  push:
+    branches:
+      - dev-branch
+
+jobs:
+  tests:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.12
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run migrations
+        run: |
+          cd order_system
+          python manage.py migrate
+
+      - name: Run tests
+        run: |
+          cd order_system
+          python manage.py test orders.tests
