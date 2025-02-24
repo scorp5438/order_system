@@ -7,7 +7,7 @@ on:
 
 jobs:
   tests:
-    run-on: windows-latest
+    runs-on: windows-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
