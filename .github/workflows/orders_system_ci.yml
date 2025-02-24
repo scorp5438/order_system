@@ -19,13 +19,16 @@ jobs:
 
       - name: Install dependencies
         run: |
+          cd order_system
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
       - name: Run migrations
         run: |
+          cd order_system
           python manage.py migrate
 
       - name: Run tests
         run: |
+          cd order_system
           python manage.py test order.tests
