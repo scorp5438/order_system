@@ -6,7 +6,7 @@ from .views import OrdersApiView
 
 
 router = DefaultRouter()
-
+app_name = 'orders'
 
 router.register('v1/orders', OrdersApiView, basename='orders')
 
