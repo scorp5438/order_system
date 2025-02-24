@@ -30,4 +30,4 @@ jobs:
       - name: Run tests
         run: |
           cd order_system
-          python manage.py test order.tests
+          python manage.py test orders.tests
