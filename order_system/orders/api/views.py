@@ -33,7 +33,7 @@ class OrdersApiView(ModelViewSet):
             serializer.save()
             instance = serializer.save()
             full_serializer = OrdersSerializer(instance)
-            logger.info(f'Заказ № {full_serializer.data.get('id')} создан')
+            logger.debug(f'Заказ № {full_serializer.data.get('id')} создан')
             return Response(full_serializer.data, status.HTTP_201_CREATED)
         else:
             logger.error(f'Ошибка при создании заказа: {serializer.errors}')
@@ -48,7 +48,7 @@ class OrdersApiView(ModelViewSet):
         if update_serializer.is_valid():
             update_serializer.save()
             full_serializer = OrdersSerializer(instance)
-            logger.info(f'Заказ № {full_serializer.data.get('id')} обновлен')
+            logger.debug(f'Заказ № {full_serializer.data.get('id')} обновлен')
             return Response(full_serializer.data, status=status.HTTP_200_OK)
         logger.error(f'Ошибка при создании заказа: {update_serializer.errors}')
         logger_2.error(f'Ошибка при создании заказа: {update_serializer.errors}')
