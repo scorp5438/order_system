@@ -12,11 +12,11 @@ jobs:
       postgres:
         image: postgres:latest
         env:
-          POSTGRES_DB: order_db
-          POSTGRES_USER: order_user
-          POSTGRES_PASSWORD: 1234
+          POSTGRES_DB: test_order_db
+          POSTGRES_USER: test_order_user
+          POSTGRES_PASSWORD: test_password
         ports:
-          - 5432:5432
+          - 5001:5001
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - name: Checkout code

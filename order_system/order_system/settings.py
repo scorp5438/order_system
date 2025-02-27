@@ -87,11 +87,11 @@ WSGI_APPLICATION = 'order_system.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'order_db',
-        'USER': 'order_user',
-        'PASSWORD': '1234',
+        'NAME': os.getenv('POSTGRES_NAME_DB','test_order_db'),
+        'USER': os.getenv('POSTGRES_USER_NAME','test_order_user'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'test_password'),
         'HOST': os.getenv('POSTGRES_HOST', 'localhost'),
-        'PORT': 5432
+        'PORT': os.getenv('POSTGRES_PORT', 5001)
     }
 }
 
