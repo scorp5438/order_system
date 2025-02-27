@@ -13,10 +13,9 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 from logging.config import dictConfig
-import inotify.adapters
 
 
-# load_dotenv()
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -142,61 +141,48 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-def setup_logging():
-    logging_config = {
-        'version': 1,
-        'formatters': {
-            'standard': {
-                'format': '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                'datefmt': '%Y-%m-%d %H:%M:%S'
-            },
+
+logging_config = {
+    'version': 1,
+    'formatters': {
+        'standard': {
+            'format': '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+            'datefmt': '%Y-%m-%d %H:%M:%S'
         },
-        'handlers': {
-            'console': {
-                'level': os.getenv('LOG_LEVEL_STREAM', 'DEBUG'),
-                'class': 'logging.StreamHandler',
-                'formatter': 'standard',
-                'stream': 'ext://sys.stdout'
-            },
-            'file': {
-                'level': os.getenv('LOG_LEVEL_FILE', 'INFO'),
-                'class': 'logging.handlers.RotatingFileHandler',
-                'formatter': 'standard',
-                'filename': 'order_app.log',
-                'maxBytes': 10485760,  # 10 MB
-                'backupCount': 5,
-                'encoding': 'utf8'
-            },
+    },
+    'handlers': {
+        'console': {
+            'level': os.getenv('LOG_LEVEL_STREAM', 'DEBUG'),
+            'class': 'logging.StreamHandler',
+            'formatter': 'standard',
+            'stream': 'ext://sys.stdout'
         },
-        'loggers': {
-            'console_logger': {
-                'handlers': ['console'],
-                'level': 'DEBUG',
-                'propagate': False
-            },
-            'file_logger': {
-                'handlers': ['file'],
-                'level': 'ERROR',
-                'propagate': False
-            }
+        'file': {
+            'level': os.getenv('LOG_LEVEL_FILE', 'INFO'),
+            'class': 'logging.handlers.RotatingFileHandler',
+            'formatter': 'standard',
+            'filename': 'order_app.log',
+            'maxBytes': 10485760,  # 10 MB
+            'backupCount': 5,
+            'encoding': 'utf8'
         },
-        'root': {
+    },
+    'loggers': {
+        'console_logger': {
             'handlers': ['console'],
-            'level': 'INFO'
+            'level': 'DEBUG',
+            'propagate': False
+        },
+        'file_logger': {
+            'handlers': ['file'],
+            'level': 'ERROR',
+            'propagate': False
         }
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO'
     }
+}
 
-    dictConfig(logging_config)
-
-def watch_env_file():
-    i = inotify.adapters.Inotify()
-    i.add_watch('.env')
-
-    for event in i.event_gen():
-        if event is not None:
-            if 'IN_MODIFY' in event[1]:
-                load_dotenv('.env', override=True)
-                setup_logging()
-
-import threading
-threading.Thread(target=watch_env_file, daemon=True).start()
+dictConfig(logging_config)
