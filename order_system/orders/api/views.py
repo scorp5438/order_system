@@ -1,9 +1,14 @@
+import logging
+
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework import status
 
 from .serializers import OrdersSerializer, CreateOrderSerializer, UpdateOrderSerializer
 from orders.models import Orders
+
+logger = logging.getLogger('console_logger')
+logger_2 = logging.getLogger('file_logger')
 
 class OrdersApiView(ModelViewSet):
     queryset = Orders.objects.all()
@@ -28,8 +33,11 @@ class OrdersApiView(ModelViewSet):
             serializer.save()
             instance = serializer.save()
             full_serializer = OrdersSerializer(instance)
+            logger.info(f'Заказ № {full_serializer.data.get('id')} создан')
             return Response(full_serializer.data, status.HTTP_201_CREATED)
         else:
+            logger.error(f'Ошибка при создании заказа: {serializer.errors}')
+            logger_2.error(f'Ошибка при создании заказа: {serializer.errors}')
             return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
 
 
@@ -40,6 +48,8 @@ class OrdersApiView(ModelViewSet):
         if update_serializer.is_valid():
             update_serializer.save()
             full_serializer = OrdersSerializer(instance)
+            logger.info(f'Заказ № {full_serializer.data.get('id')} обновлен')
             return Response(full_serializer.data, status=status.HTTP_200_OK)
-
+        logger.error(f'Ошибка при создании заказа: {update_serializer.errors}')
+        logger_2.error(f'Ошибка при создании заказа: {update_serializer.errors}')
         return Response(update_serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 from dotenv import load_dotenv
-
+from logging.config import dictConfig
 
 load_dotenv()
 
@@ -151,25 +151,30 @@ logging_config = {
     },
     'handlers': {
         'console': {
-            'level': 'DEBUG',
+            'level': os.getenv('LOG_LEVEL_STREAM', 'DEBUG'),
             'class': 'logging.StreamHandler',
             'formatter': 'standard',
             'stream': 'ext://sys.stdout'
         },
         'file': {
-            'level': 'INFO',
+            'level': os.getenv('LOG_LEVEL_FILE', 'INFO'),
             'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'standard',
-            'filename': 'app.log',
+            'filename': 'order_app.log',
             'maxBytes': 10485760,  # 10 MB
             'backupCount': 5,
             'encoding': 'utf8'
         },
     },
     'loggers': {
-        'my_logger': {
-            'handlers': ['console', 'file'],
-            'level': 'DEBUG',
+        'console_logger': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False
+        },
+        'file_logger': {
+            'handlers': ['file'],
+            'level': 'ERROR',
             'propagate': False
         }
     },
@@ -178,3 +183,5 @@ logging_config = {
         'level': 'INFO'
     }
 }
+
+dictConfig(logging_config)
