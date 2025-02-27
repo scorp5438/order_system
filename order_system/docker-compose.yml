@@ -9,15 +9,17 @@ services:
       - db
     environment:
       - PYTHONPATH=/app
-
+    volumes:
+      - .env:/app/.env
   db:
     image: postgres:17
     environment:
-      POSTGRES_DB: order_db
-      POSTGRES_USER: order_user
-      POSTGRES_PASSWORD: 1234
-      PORT: 5432
+      POSTGRES_DB: ${POSTGRES_NAME_DB}
+      POSTGRES_USER: ${POSTGRES_USER_NAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PORT: ${POSTGRES_PORT}
     volumes:
       - postgres_data:/var/lib/postgresql/data/
+
 volumes:
   postgres_data:
