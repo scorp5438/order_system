@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -20,10 +20,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-ky-$7g9_$ylp4pd194)6to@b-$*!n^ct9qfl$_k&wf@2+jy(xf'
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-ky-$7g9_$ylp4pd194)6to@b-$*!n^ct9qfl$_k&wf@2+jy(xf')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', True)
 
 ALLOWED_HOSTS = []
 
@@ -87,11 +87,11 @@ WSGI_APPLICATION = 'order_system.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'order_db',
-        'USER': 'order_user',
-        'PASSWORD': '1234',
-        'HOST': 'db',
-        'PORT': 5432
+        'NAME': os.getenv('POSTGRES_NAME_DB','test_order_db'),
+        'USER': os.getenv('POSTGRES_USER_NAME','test_order_user'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'test_password'),
+        'HOST': os.getenv('POSTGRES_HOST', 'localhost'),
+        'PORT': os.getenv('POSTGRES_PORT', 5001)
     }
 }
 
@@ -136,3 +136,4 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
