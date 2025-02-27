@@ -10,7 +10,7 @@ services:
     environment:
       - PYTHONPATH=/app
     volumes:
-      - .env:/app/.env
+      - .:/app/
   db:
     image: postgres:17
     environment:
