@@ -6,20 +6,12 @@ from rest_framework import status
 
 from .serializers import OrdersSerializer, CreateOrderSerializer, UpdateOrderSerializer
 from orders.models import Orders
-
-logger = logging.getLogger('console_logger')
-logger_2 = logging.getLogger('file_logger')
+from .tasks import order_creation, order_update_status, order_creation_invalid_data, order_update_invalid_data
 
 
 class OrdersApiView(ModelViewSet):
     queryset = Orders.objects.all()
     http_method_name = ['GET', 'POST', 'PATCH']
-    methods = {
-        'GET': OrdersSerializer,
-        'PATCH': UpdateOrderSerializer,
-        'PUT': UpdateOrderSerializer,
-        'POST': CreateOrderSerializer
-    }
 
     def get_serializer_class(self):
         if self.request.method == 'GET':
@@ -34,11 +26,10 @@ class OrdersApiView(ModelViewSet):
             serializer.save()
             instance = serializer.save()
             full_serializer = OrdersSerializer(instance)
-            logger.debug(f'Заказ № {full_serializer.data.get("id")} создан')
+            order_creation.delay(full_serializer.data)
             return Response(full_serializer.data, status.HTTP_201_CREATED)
         else:
-            logger.error(f'Ошибка при создании заказа: {serializer.errors}')
-            logger_2.error(f'Ошибка при создании заказа: {serializer.errors}')
+            order_creation_invalid_data.delay(serializer.errors)
             return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, *args, **kwargs):
@@ -48,8 +39,7 @@ class OrdersApiView(ModelViewSet):
         if update_serializer.is_valid():
             update_serializer.save()
             full_serializer = OrdersSerializer(instance)
-            logger.debug(f'Заказ № {full_serializer.data.get("id")} обновлен')
+            order_update_status.delay(full_serializer.data)
             return Response(full_serializer.data, status=status.HTTP_200_OK)
-        logger.error(f'Ошибка при создании заказа: {update_serializer.errors}')
-        logger_2.error(f'Ошибка при создании заказа: {update_serializer.errors}')
+        order_update_invalid_data.delay(update_serializer.errors)
         return Response(update_serializer.errors, status=status.HTTP_400_BAD_REQUEST)

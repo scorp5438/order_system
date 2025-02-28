@@ -9,6 +9,7 @@ services:
       - db
     environment:
       - PYTHONPATH=/app
+      - EMAIL_PASSWORD=${EMAIL_PASSWORD}
     volumes:
       - static_volume:/app/static
   db:
@@ -30,6 +31,22 @@ services:
       - static_volume:/app/static
     depends_on:
       - web
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+
+  celery:
+    build: .
+    command: celery -A order_system worker --loglevel=info
+    depends_on:
+      - redis
+      - db
+    environment:
+      - PYTHONPATH=/app
+    volumes:
+      - .:/app/
 
 volumes:
   postgres_data:

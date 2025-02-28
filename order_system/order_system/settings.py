@@ -191,3 +191,18 @@ logging_config = {
 }
 
 dictConfig(logging_config)
+
+CELERY_BROKER_URL = f'redis://{os.getenv("REDIS_HOST", "localhost")}:6379/0'
+CELERY_RESULT_BACKEND = f'redis://{os.getenv("REDIS_HOST", "localhost")}:6379/0'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+
+
+# Настройки для отправки писем через Gmail
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.mail.ru'
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
+EMAIL_HOST_USER = 'order_system@mail.ru'
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD')
+DEFAULT_FROM_EMAIL = 'order_system@mail.ru'
