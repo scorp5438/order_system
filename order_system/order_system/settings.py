@@ -180,7 +180,7 @@ logging_config = {
         },
         'file_logger': {
             'handlers': ['file'],
-            'level': 'DEBUG',
+            'level': 'ERROR',
             'propagate': False
         }
     },
@@ -192,7 +192,7 @@ logging_config = {
 
 dictConfig(logging_config)
 
-CELERY_BROKER_URL = 'redis://redis:6379/0'
-CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
+CELERY_BROKER_URL = f'redis://{os.getenv("REDIS_HOST", "localhost")}:6379/0'
+CELERY_RESULT_BACKEND = f'redis://{os.getenv("REDIS_HOST", "localhost")}:6379/0'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
