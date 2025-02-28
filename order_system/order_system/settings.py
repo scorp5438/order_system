@@ -135,12 +135,17 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+logs_dir = os.path.join(BASE_DIR, 'logs')
+os.makedirs(logs_dir, exist_ok=True)
 
 logging_config = {
     'version': 1,
@@ -161,7 +166,7 @@ logging_config = {
             'level': os.getenv('LOG_LEVEL_FILE', 'INFO'),
             'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'standard',
-            'filename': 'order_app.log',
+            'filename': os.path.join(BASE_DIR, 'logs', 'order_app.log'),
             'maxBytes': 10485760,  # 10 MB
             'backupCount': 5,
             'encoding': 'utf8'
