@@ -41,5 +41,5 @@ class OrdersApiView(ModelViewSet):
             full_serializer = OrdersSerializer(instance)
             order_update_status.delay(full_serializer.data.get('id'), request.data.get('status'))
             return Response(full_serializer.data, status=status.HTTP_200_OK)
-        order_update_invalid_data.delay(update_serializer.errors.errors)
+        order_update_invalid_data.delay(update_serializer.errors)
         return Response(update_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
