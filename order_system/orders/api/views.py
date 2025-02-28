@@ -26,7 +26,7 @@ class OrdersApiView(ModelViewSet):
             serializer.save()
             instance = serializer.save()
             full_serializer = OrdersSerializer(instance)
-            order_creation.delay(full_serializer.data.get('id'))
+            order_creation.delay(full_serializer)
             return Response(full_serializer.data, status.HTTP_201_CREATED)
         else:
             order_creation_invalid_data.delay(serializer.errors)
@@ -39,7 +39,7 @@ class OrdersApiView(ModelViewSet):
         if update_serializer.is_valid():
             update_serializer.save()
             full_serializer = OrdersSerializer(instance)
-            order_update_status.delay(full_serializer.data.get('id'), request.data.get('status'))
+            order_update_status.delay(full_serializer)
             return Response(full_serializer.data, status=status.HTTP_200_OK)
         order_update_invalid_data.delay(update_serializer.errors)
         return Response(update_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
