@@ -37,13 +37,15 @@ jobs:
           cd order_system
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      
+
       - name: Wait for Redis
         run: |
           for i in {1..30}; do
-            if redis-cli -h redis ping; then
+            if docker exec redis redis-cli ping; then
+              echo "Redis is up!"
               break
             fi
+            echo "Waiting for Redis..."
             sleep 1
           done
 
