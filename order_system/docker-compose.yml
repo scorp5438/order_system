@@ -9,6 +9,7 @@ services:
       - db
     environment:
       - PYTHONPATH=/app
+      - EMAIL_PASSWORD=${EMAIL_PASSWORD}
     volumes:
       - static_volume:/app/static
   db:
