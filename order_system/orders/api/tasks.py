@@ -4,7 +4,7 @@ import logging
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 
-from .models import Orders
+from ..models import Orders
 
 logger_console = logging.getLogger('console_logger')
 logger_file = logging.getLogger('file_logger')
@@ -41,7 +41,7 @@ def order_update_status(order: Orders):
         'product': order.product_name,
         'status': status,
     }
-    html_message = render_to_string('email/create_order.html', context)
+    html_message = render_to_string('email/update_order.html', context)
     email = EmailMessage(
         f'Статус заказа с номером № {order_pk} успешно обновлен.',
         html_message,
