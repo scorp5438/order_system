@@ -47,6 +47,12 @@ jobs:
           cd order_system
           python manage.py test orders.tests
 
+      - name: Run tests tasks
+        run: |
+          pip install pytest pytest-celery
+          cd order_system
+          pytest
+
       - name: Lint code
         run: |
           pip install flake8

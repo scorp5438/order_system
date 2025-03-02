@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
+    'django_filters',
 
     'orders.apps.OrdersConfig',
 ]
@@ -117,6 +118,13 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.'
+                                'pagination.'
+                                'PageNumberPagination',
+    'PAGE_SIZE': 10,
+}
 
 logs_dir = os.path.join(BASE_DIR, 'logs')
 os.makedirs(logs_dir, exist_ok=True)

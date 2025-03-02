@@ -1,4 +1,6 @@
+import django_filters
 from rest_framework import status
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
@@ -10,6 +12,7 @@ from .tasks import (order_creation,
                     order_update_status,
                     order_creation_invalid_data,
                     order_update_invalid_data)
+from ..filtrers import OrderFilter
 
 
 class OrdersApiView(ModelViewSet):
@@ -27,6 +30,9 @@ class OrdersApiView(ModelViewSet):
     """
     queryset = Orders.objects.all()
     http_method_name = ['GET', 'POST', 'PATCH']
+    pagination_class = PageNumberPagination
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
+    filterset_class = OrderFilter
 
     def get_serializer_class(self):
         """
