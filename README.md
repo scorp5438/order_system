@@ -61,9 +61,17 @@
 
 После запуска приложение будет доступно по следующим адресам:
 
-- **API**: [http://localhost:8000/api/](http://localhost:8000/api/)
+- **API**: [http://localhost:80/api/](http://localhost:80/api/)
 - **Админка**: [http://localhost:8000/admin/](http://localhost:8000/admin/)  
-  **Логин/пароль**: `admin/admin`
+  **Логин/пароль**: `admin/admin*`
+
+`* ВАЖНО Чтобы зайти в админку необходимо находясь в корне проекта создать superuser. Команда:`
+
+```bash
+  python manage.py createsuperuser
+```
+`Далее задать логин и пароль например admin/admin`
+
 
 ## 5. Остановка приложения
 
