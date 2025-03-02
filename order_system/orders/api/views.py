@@ -28,7 +28,7 @@ class OrdersApiView(ModelViewSet):
     - queryset: QuerySet для получения всех заказов или одного заказа по id.
     - http_method_name: ['GET', 'POST', 'PATCH'].
     """
-    queryset = Orders.objects.all()
+    queryset = Orders.objects.all().order_by('pk')
     http_method_name = ['GET', 'POST', 'PATCH']
     pagination_class = PageNumberPagination
     filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
