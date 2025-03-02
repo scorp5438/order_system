@@ -15,13 +15,64 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Orders',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('product_name', models.CharField(max_length=30, verbose_name='Наименование товара')),
-                ('quantity', models.PositiveSmallIntegerField(default=1, verbose_name='Количество товара')),
-                ('customer_email', models.EmailField(max_length=255, validators=[django.core.validators.EmailValidator()], verbose_name='e-mail')),
-                ('status', models.CharField(choices=[('created', 'created'), ('processing', 'created'), ('completed', 'created'), ('cancelled', 'created')], default='created', max_length=15, verbose_name='Статус')),
-                ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')),
-                ('updated_at', models.DateTimeField(auto_now=True, verbose_name='Дата изменения')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID'
+                    )
+                ),
+                (
+                    'product_name',
+                    models.CharField(
+                        max_length=30,
+                        verbose_name='Наименование товара'
+                    )
+                ),
+                (
+                    'quantity',
+                    models.PositiveSmallIntegerField(
+                        default=1,
+                        verbose_name='Количество товара'
+                    )
+                ),
+                (
+                    'customer_email',
+                    models.EmailField(
+                        max_length=255,
+                        validators=[django.core.validators.EmailValidator()],
+                        verbose_name='e-mail'
+                    )
+                ),
+                (
+                    'status', models.CharField(
+                        choices=[
+                            ('created', 'created'),
+                            ('processing', 'created'),
+                            ('completed', 'created'),
+                            ('cancelled', 'created')
+                        ],
+                        default='created',
+                        max_length=15,
+                        verbose_name='Статус'
+                    )
+                ),
+                (
+                    'created_at',
+                    models.DateTimeField(
+                        auto_now_add=True,
+                        verbose_name='Дата создания'
+                    )
+                ),
+                (
+                    'updated_at',
+                    models.DateTimeField(
+                        auto_now=True,
+                        verbose_name='Дата изменения'
+                    )
+                ),
             ],
             options={
                 'verbose_name': 'Заказ',
