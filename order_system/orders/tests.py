@@ -42,17 +42,39 @@ class OrdersApiViewTestCase(TestCase):
 
     def test_get_one_order(self):
         current_order_pk = self.order_2.pk
-        response = self.client.get(reverse('orders:orders-detail', kwargs={'pk': current_order_pk}))
+        response = self.client.get(
+            reverse('orders:orders-detail',
+                    kwargs={'pk': current_order_pk})
+        )
         response_data = response.json()
 
-        self.assertEqual(response_data.get('id'), current_order_pk)
-        self.assertEqual(response_data.get('product_name'), self.order_2.product_name)
-        self.assertEqual(response_data.get('customer_email'), self.order_2.customer_email)
-        self.assertEqual(response_data.get('status'), self.order_2.status)
+        self.assertEqual(
+            response_data.get('id'),
+            current_order_pk
+        )
+        self.assertEqual(
+
+            response_data.get('product_name'),
+            self.order_2.product_name
+        )
+        self.assertEqual(
+            response_data.get('customer_email'),
+            self.order_2.customer_email
+        )
+        self.assertEqual(
+            response_data.get('status'),
+            self.order_2.status
+        )
 
     def test_get_one_order_non_existent_pk(self):
-        current_order_pk = Orders.objects.all().aggregate(Count('pk')).get('pk__count') + 1
-        response = self.client.get(reverse('orders:orders-detail', kwargs={'pk': current_order_pk}))
+        current_order_pk = (Orders.objects.
+                            all().
+                            aggregate(Count('pk')).
+                            get('pk__count') + 1)
+        response = self.client.get(reverse(
+            'orders:orders-detail',
+            kwargs={'pk': current_order_pk}
+        ))
         response_data = response.json()
         status_code = response.status_code
         expected_response = 'No Orders matches the given query.'
@@ -60,19 +82,35 @@ class OrdersApiViewTestCase(TestCase):
         self.assertEqual(status_code, 404)
         self.assertEqual(response_data.get('detail'), expected_response)
 
-
     def test_create_order_valid_data(self):
-        response = self.client.post(reverse('orders:orders-list'), data=self.data, content_type='application/json')
+        response = self.client.post(
+            reverse('orders:orders-list'),
+            data=self.data,
+            content_type='application/json'
+        )
         response_data = response.json()
 
-        self.assertEqual(response_data.get('product_name'), self.data.get('product_name'))
-        self.assertEqual(response_data.get('quantity'), self.data.get('quantity'))
-        self.assertEqual(response_data.get('customer_email'), self.data.get('customer_email'))
+        self.assertEqual(
+            response_data.get('product_name'),
+            self.data.get('product_name')
+        )
+        self.assertEqual(
+            response_data.get('quantity'),
+            self.data.get('quantity')
+        )
+        self.assertEqual(
+            response_data.get('customer_email'),
+            self.data.get('customer_email')
+        )
 
     def test_create_order_invalid_product_name(self):
         self.data['product_name'] = ''
 
-        response = self.client.post(reverse('orders:orders-list'), data=self.data, content_type='application/json')
+        response = self.client.post(
+            reverse('orders:orders-list'),
+            data=self.data,
+            content_type='application/json'
+        )
         response_data = response.json()
         status_code = response.status_code
 
@@ -83,7 +121,11 @@ class OrdersApiViewTestCase(TestCase):
     def test_create_order_invalid_quantity(self):
         self.data['quantity'] = 0
 
-        response = self.client.post(reverse('orders:orders-list'), data=self.data, content_type='application/json')
+        response = self.client.post(
+            reverse('orders:orders-list'),
+            data=self.data,
+            content_type='application/json'
+        )
         response_data = response.json()
         status_code = response.status_code
 
@@ -94,7 +136,11 @@ class OrdersApiViewTestCase(TestCase):
     def test_create_order_invalid_quantity_below_zero(self):
         self.data['quantity'] = -1
 
-        response = self.client.post(reverse('orders:orders-list'), data=self.data, content_type='application/json')
+        response = self.client.post(
+            reverse('orders:orders-list'),
+            data=self.data,
+            content_type='application/json'
+        )
         response_data = response.json()
         status_code = response.status_code
 
@@ -102,65 +148,113 @@ class OrdersApiViewTestCase(TestCase):
         self.assertEqual(status_code, 400)
         self.assertIn(expected_response, response_data.get('quantity'))
 
-
     def test_create_order_invalid_quantity_not_int(self):
         self.data['quantity'] = ''
 
-        response = self.client.post(reverse('orders:orders-list'), data=self.data, content_type='application/json')
+        response = self.client.post(
+            reverse('orders:orders-list'),
+            data=self.data,
+            content_type='application/json'
+        )
         response_data = response.json()
         status_code = response.status_code
 
         expected_response = 'A valid integer is required.'
         self.assertEqual(status_code, 400)
-        self.assertIn(expected_response, response_data.get('quantity'))
+        self.assertIn(
+            expected_response,
+            response_data.get('quantity')
+        )
 
     def test_create_order_invalid_email(self):
         self.data['customer_email'] = '1234@mail'
 
-        response = self.client.post(reverse('orders:orders-list'), data=self.data, content_type='application/json')
+        response = self.client.post(
+            reverse('orders:orders-list'),
+            data=self.data,
+            content_type='application/json'
+        )
         response_data = response.json()
         status_code = response.status_code
 
         expected_response = 'Enter a valid email address.'
         self.assertEqual(status_code, 400)
-        self.assertIn(expected_response, response_data.get('customer_email'))
-
+        self.assertIn(
+            expected_response,
+            response_data.get('customer_email')
+        )
 
     def test_create_order_email_is_blank(self):
         self.data['customer_email'] = ''
 
-        response = self.client.post(reverse('orders:orders-list'), data=self.data, content_type='application/json')
+        response = self.client.post(
+            reverse('orders:orders-list'),
+            data=self.data,
+            content_type='application/json'
+        )
         response_data = response.json()
         status_code = response.status_code
 
         expected_response = 'This field may not be blank.'
         self.assertEqual(status_code, 400)
-        self.assertIn(expected_response, response_data.get('customer_email'))
+        self.assertIn(
+            expected_response,
+            response_data.get('customer_email')
+        )
 
     def test_update_order(self):
         self.data = {
             'status': 'processing'
         }
+
         current_order_pk = self.order_1.pk
-        response = self.client.patch(reverse('orders:orders-detail', kwargs={'pk': current_order_pk}), data=self.data, content_type='application/json')
+        response = self.client.patch(
+            reverse(
+                'orders:orders-detail',
+                kwargs={'pk': current_order_pk}
+            ),
+            data=self.data,
+            content_type='application/json'
+        )
         response_data = response.json()
         status_code = response.status_code
 
-        self.assertEqual(status_code, 200)
-        self.assertEqual(response_data.get('status'), self.data.get('status'))
-        self.assertEqual(response_data.get('id'), current_order_pk)
-        self.assertEqual(response_data.get('product_name'), self.order_1.product_name)
-
+        self.assertEqual(
+            status_code,
+            200
+        )
+        self.assertEqual(
+            response_data.get('status'),
+            self.data.get('status')
+        )
+        self.assertEqual(
+            response_data.get('id'),
+            current_order_pk
+        )
+        self.assertEqual(
+            response_data.get('product_name'),
+            self.order_1.product_name
+        )
 
     def test_update_order_invalid_data(self):
         self.data = {
             'status': 'test'
         }
         current_order_pk = self.order_1.pk
-        response = self.client.patch(reverse('orders:orders-detail', kwargs={'pk': current_order_pk}), data=self.data, content_type='application/json')
+        response = self.client.patch(
+            reverse(
+                'orders:orders-detail',
+                kwargs={'pk': current_order_pk}
+            ),
+            data=self.data,
+            content_type='application/json'
+        )
         response_data = response.json()
         status_code = response.status_code
         expected_response = 'is not a valid choice.'
 
         self.assertEqual(status_code, 400)
-        self.assertIn(expected_response, response_data.get('status')[0])
+        self.assertIn(
+            expected_response,
+            response_data.get('status')[0]
+        )

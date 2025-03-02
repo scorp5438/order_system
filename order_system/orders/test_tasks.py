@@ -17,7 +17,10 @@ class CeleryTasksTestCase(TestCase):
         }
 
         with patch('django.core.mail.EmailMessage.send') as mock_send:
-            with patch.object(logging.getLogger('console_logger'), 'debug') as mock_logger:
+            with patch.object(
+                    logging.getLogger('console_logger'),
+                    'debug'
+            ) as mock_logger:
                 order_creation(order_data)
                 mock_send.assert_called_once()
                 mock_logger.assert_called_with('Заказ № 1 создан')
@@ -30,21 +33,36 @@ class CeleryTasksTestCase(TestCase):
         }
 
         with patch('django.core.mail.EmailMessage.send') as mock_send:
-            with patch.object(logging.getLogger('console_logger'), 'debug') as mock_logger:
+            with patch.object(
+                    logging.getLogger('console_logger'),
+                    'debug'
+            ) as mock_logger:
                 order_update_status(order_data)
                 mock_send.assert_called_once()
-                mock_logger.assert_called_with('У заказ № 1 изменен статус на completed')
+                mock_logger.assert_called_with(
+                    'У заказ № 1 изменен статус на completed'
+                )
 
     def test_order_creation_invalid_data(self):
         error_message = 'Invalid data'
 
-        with patch.object(logging.getLogger('console_logger'), 'error') as mock_logger:
+        with patch.object(
+                logging.getLogger('console_logger'),
+                'error'
+        ) as mock_logger:
             order_creation_invalid_data(error_message)
-            mock_logger.assert_called_with('Ошибка при создании заказа: Invalid data')
+            mock_logger.assert_called_with(
+                'Ошибка при создании заказа: Invalid data'
+            )
 
     def test_order_update_invalid_data(self):
         error_message = 'Invalid data'
 
-        with patch.object(logging.getLogger('console_logger'), 'error') as mock_logger:
+        with patch.object(
+                logging.getLogger('console_logger'),
+                'error'
+        ) as mock_logger:
             order_update_invalid_data(error_message)
-            mock_logger.assert_called_with('Ошибка при обновлении заказа: Invalid data')
+            mock_logger.assert_called_with(
+                'Ошибка при обновлении заказа: Invalid data'
+            )
