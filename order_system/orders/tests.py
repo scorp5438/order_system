@@ -33,7 +33,10 @@ class OrdersApiViewTestCase(TestCase):
     def test_get_all_orders(self):
         response = self.client.get(reverse('orders:orders-list'))
         response_data = response.json()
-        status_order_1 = response_data[0].get('status')
+        if response_data:
+            status_order_1 = response_data[0].get('status')
+        else:
+            status_order_1 = None
         email = response_data[1].get('customer_email')
 
         self.assertEqual(len(response_data), 2)
@@ -60,10 +63,11 @@ class OrdersApiViewTestCase(TestCase):
         self.assertEqual(response_data.get('status'), self.order_2.status)
 
     def test_get_one_order_non_existent_pk(self):
-        current_order_pk = (Orders.objects.
+        current_order_pk = ((Orders.objects.
                             all().
                             aggregate(Count('pk')).
-                            get('pk__count') + 1)
+                            get('pk__count') + 1).
+                            order_by('id'))
         response = self.client.get(reverse(
             'orders:orders-detail',
             kwargs={'pk': current_order_pk})
