@@ -3,8 +3,13 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from orders.models import Orders
-from .serializers import OrdersSerializer, CreateOrderSerializer, UpdateOrderSerializer
-from .tasks import order_creation, order_update_status, order_creation_invalid_data, order_update_invalid_data
+from .serializers import (OrdersSerializer,
+                          CreateOrderSerializer,
+                          UpdateOrderSerializer)
+from .tasks import (order_creation,
+                    order_update_status,
+                    order_creation_invalid_data,
+                    order_update_invalid_data)
 
 
 class OrdersApiView(ModelViewSet):
@@ -60,7 +65,11 @@ class OrdersApiView(ModelViewSet):
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
-        update_serializer = self.get_serializer(instance, data=request.data, partial=True)
+        update_serializer = self.get_serializer(
+            instance,
+            data=request.data,
+            partial=True
+        )
 
         if update_serializer.is_valid():
             update_serializer.save()
@@ -68,4 +77,7 @@ class OrdersApiView(ModelViewSet):
             order_update_status.delay(full_serializer.data)
             return Response(full_serializer.data, status=status.HTTP_200_OK)
         order_update_invalid_data.delay(update_serializer.errors)
-        return Response(update_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(
+            update_serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST
+        )

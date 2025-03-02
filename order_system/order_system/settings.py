@@ -9,7 +9,10 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Секретный ключ для подписи cookies и других целей безопасности.
-SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-ky-$7g9_$ylp4pd194)6to@b-$*!n^ct9qfl$_k&wf@2+jy(xf')
+SECRET_KEY = os.getenv(
+    'SECRET_KEY',
+    'django-insecure-ky-$7g9_$ylp4pd194)6to@b-$*!n^ct9qfl$_k&wf@2+jy(xf'
+)
 
 # Режим отладки. Включает подробные ошибки и отключает кэширование.
 DEBUG = os.getenv('DEBUG', 'True').lower() == 'true'
@@ -63,8 +66,8 @@ WSGI_APPLICATION = 'order_system.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_NAME_DB','test_order_db'),
-        'USER': os.getenv('POSTGRES_USER_NAME','test_order_user'),
+        'NAME': os.getenv('POSTGRES_NAME_DB', 'test_order_db'),
+        'USER': os.getenv('POSTGRES_USER_NAME', 'test_order_user'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'test_password'),
         'HOST': os.getenv('POSTGRES_HOST', 'localhost'),
         'PORT': os.getenv('POSTGRES_PORT', 5001)
@@ -75,16 +78,24 @@ DATABASES = {
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME': 'django.contrib.auth.'
+                'password_validation.'
+                'UserAttributeSimilarityValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME': 'django.contrib.auth.'
+                'password_validation.'
+                'MinimumLengthValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'NAME': 'django.contrib.auth.'
+                'password_validation.'
+                'CommonPasswordValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME': 'django.contrib.auth.'
+                'password_validation.'
+                'NumericPasswordValidator',
     },
 ]
 
@@ -156,7 +167,10 @@ logging_config = {
 dictConfig(logging_config)
 # URL для подключения к брокеру сообщений Celery (Redis).
 CELERY_BROKER_URL = f'redis://{os.getenv("REDIS_HOST", "localhost")}:6379/0'
-CELERY_RESULT_BACKEND = f'redis://{os.getenv("REDIS_HOST", "localhost")}:6379/0'
+CELERY_RESULT_BACKEND = f'redis://{os.getenv(
+    "REDIS_HOST",
+    "localhost"
+)}:6379/0'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 

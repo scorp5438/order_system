@@ -12,5 +12,4 @@ router.register('v1/orders', OrdersApiView, basename='orders')
 urlpatterns = [
     path('', include(router.urls))
 ]
-
 # urlpatterns += router.urls

@@ -15,7 +15,8 @@ def order_creation(order):
     Асинхронная задача для обработки создания заказа.
 
     Args:
-        order (dict): Данные заказа, включая ID, email клиента и название товара.
+        order (dict): Данные заказа, включая ID,
+        email клиента и название товара.
     """
     order_pk = order.get('id')
     customer_email = order.get('customer_email')
@@ -39,7 +40,6 @@ def order_creation(order):
 
     email.content_subtype = "html"
     email.send()
-
 
 
 @shared_task
@@ -72,7 +72,6 @@ def order_update_status(order):
 
     email.content_subtype = "html"
     email.send()
-
 
 
 @shared_task
