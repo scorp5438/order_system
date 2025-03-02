@@ -22,8 +22,8 @@ class OrdersApiView(ModelViewSet):
     - PATCH: Обновление статуса заказа.
 
     Атрибуты:
-    - queryset: QuerySet для получения всех заказов.
-    - http_method_name: Список разрешенных HTTP-методов.
+    - queryset: QuerySet для получения всех заказов или одного заказа по id.
+    - http_method_name: ['GET', 'POST', 'PATCH'].
     """
     queryset = Orders.objects.all()
     http_method_name = ['GET', 'POST', 'PATCH']
