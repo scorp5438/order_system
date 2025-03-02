@@ -21,8 +21,8 @@
 ## 1. Склонируйте репозиторий:
 
 ```bash
-git clone https://github.com/scorp5438/order_system.git
-cd order_system
+  git clone https://github.com/scorp5438/order_system.git
+  cd order_system
 ``` 
 
 ## 2. Создайте файл .env в корне проекта и заполните его переменными окружения. Пример:
@@ -50,10 +50,10 @@ cd order_system
     EMAIL_PASSWORD
 
 ## 3. Запустите приложение с помощью Docker Compose:
-   
-    ```bash
-   docker-compose up --build
-    ```
+
+```bash
+  docker-compose up --build
+```
 
 # Руководство по запуску и использованию приложения
 
@@ -69,8 +69,8 @@ cd order_system
 
 Чтобы остановить приложение, выполните команду:
 ```bash 
-    docker-compose down
-   ```
+  docker-compose down
+```
 
 ## 6. API Endpoints
 
