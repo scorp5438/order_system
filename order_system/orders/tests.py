@@ -143,7 +143,7 @@ class OrdersApiViewTestCase(TestCase):
         }
         current_order_pk = self.order_1.pk
         response = self.client.patch(reverse('orders:orders-detail', kwargs={'pk': current_order_pk}), data=self.data, content_type='application/json')
-        response_data = response.json().get('results')
+        response_data = response.json()
         status_code = response.status_code
 
         self.assertEqual(status_code, 200)
