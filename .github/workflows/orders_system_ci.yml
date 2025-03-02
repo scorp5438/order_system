@@ -46,3 +46,8 @@ jobs:
         run: |
           cd order_system
           python manage.py test orders.tests
+
+      - name: Lint code
+        run: |
+          pip install flake8
+          flake8 .

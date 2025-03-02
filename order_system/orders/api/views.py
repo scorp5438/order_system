@@ -1,19 +1,35 @@
-import logging
-
-from rest_framework.viewsets import ModelViewSet
-from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.viewsets import ModelViewSet
 
-from .serializers import OrdersSerializer, CreateOrderSerializer, UpdateOrderSerializer
 from orders.models import Orders
+from .serializers import OrdersSerializer, CreateOrderSerializer, UpdateOrderSerializer
 from .tasks import order_creation, order_update_status, order_creation_invalid_data, order_update_invalid_data
 
 
 class OrdersApiView(ModelViewSet):
+    """
+    API ViewSet для управления заказами.
+
+    Поддерживает следующие методы:
+    - GET: Получение списка заказов или деталей конкретного заказа.
+    - POST: Создание нового заказа.
+    - PATCH: Обновление статуса заказа.
+
+    Атрибуты:
+    - queryset: QuerySet для получения всех заказов.
+    - http_method_name: Список разрешенных HTTP-методов.
+    """
     queryset = Orders.objects.all()
     http_method_name = ['GET', 'POST', 'PATCH']
 
     def get_serializer_class(self):
+        """
+        Возвращает класс сериализатора в зависимости от HTTP-метода.
+
+        Returns:
+            Serializer: Класс сериализатора для текущего запроса.
+        """
         if self.request.method == 'GET':
             return OrdersSerializer
         elif self.request.method == 'POST':
@@ -21,9 +37,19 @@ class OrdersApiView(ModelViewSet):
         return UpdateOrderSerializer
 
     def create(self, request, *args, **kwargs):
+        """
+        Создает новый заказ.
+
+        Args:
+            request (Request): Объект запроса.
+            *args: Дополнительные аргументы.
+            **kwargs: Дополнительные именованные аргументы.
+
+        Returns:
+            Response: Ответ с данными созданного заказа или ошибками валидации.
+        """
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
             instance = serializer.save()
             full_serializer = OrdersSerializer(instance)
             order_creation.delay(full_serializer.data)

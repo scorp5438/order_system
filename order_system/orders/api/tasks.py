@@ -1,11 +1,9 @@
-from celery import shared_task
 import logging
 
+from celery import shared_task
+from django.conf import settings
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
-
-
-from django.conf import settings
 
 logger_console = logging.getLogger('console_logger')
 logger_file = logging.getLogger('file_logger')
@@ -13,6 +11,12 @@ logger_file = logging.getLogger('file_logger')
 
 @shared_task
 def order_creation(order):
+    """
+    Асинхронная задача для обработки создания заказа.
+
+    Args:
+        order (dict): Данные заказа, включая ID, email клиента и название товара.
+    """
     order_pk = order.get('id')
     customer_email = order.get('customer_email')
 
@@ -40,6 +44,12 @@ def order_creation(order):
 
 @shared_task
 def order_update_status(order):
+    """
+    Асинхронная задача для обработки обновления статуса заказа.
+
+    Args:
+        order (dict): Данные заказа, включая ID, email клиента и новый статус.
+    """
     order_pk = order.get('id')
     customer_email = order.get('customer_email')
     status = order.get('status')
@@ -67,11 +77,23 @@ def order_update_status(order):
 
 @shared_task
 def order_creation_invalid_data(error_message):
+    """
+    Асинхронная задача для логирования ошибок при создании заказа.
+
+    Args:
+        error_message (dict): Данные заказа.
+    """
     logger_console.error(f'Ошибка при создании заказа: {error_message}')
     logger_file.error(f'Ошибка при создании заказа: {error_message}')
 
 
 @shared_task
 def order_update_invalid_data(error_message):
+    """
+    Асинхронная задача для логирования ошибок при изменении статуса заказа.
+
+    Args:
+        error_message (dict): Данные заказа.
+    """
     logger_console.error(f'Ошибка при обновлении заказа: {error_message}')
     logger_file.error(f'Ошибка при обновлении заказа: {error_message}')
