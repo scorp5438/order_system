@@ -7,6 +7,11 @@ services:
       - "8000:8000"
     depends_on:
       - db
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/health/" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
     environment:
       - PYTHONPATH=/app
       - EMAIL_PASSWORD=${EMAIL_PASSWORD}
@@ -21,6 +26,11 @@ services:
       PORT: ${POSTGRES_PORT}
     volumes:
       - postgres_data:/var/lib/postgresql/data/
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER_NAME} -d ${POSTGRES_NAME_DB}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   nginx:
     image: nginx:latest
@@ -47,6 +57,11 @@ services:
       - PYTHONPATH=/app
     volumes:
       - .:/app/
+    healthcheck:
+      test: [ "CMD", "celery", "-A", "order_system", "status" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
 volumes:
   postgres_data:

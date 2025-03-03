@@ -1,12 +1,20 @@
 FROM python:3.12
 
+RUN useradd -m alex
+
 WORKDIR /app
 
 COPY requirements.txt /app
 
 RUN pip install --no-cache-dir -r requirements.txt
 
+RUN pip cache purge
+
 COPY . .
+
+RUN chown -R alex:alex /app
+
+USER alex
 
 RUN python manage.py collectstatic --noinput
 
