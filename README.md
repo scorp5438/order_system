@@ -27,9 +27,9 @@
 
 ## 2. Создайте файл .env в корне проекта и заполните его переменными окружения. Пример:
 
-    SECRET_KEY=
+    DJANGO_SECRET_KEY=
  
-    DEBUG=
+    DJANGO_DEBUG=
 
     POSTGRES_NAME_DB=
     
@@ -47,7 +47,7 @@
     
     REDIS_HOST=
     
-    EMAIL_PASSWORD
+    EMAIL_PASSWORD=
 
 ## 3. Запустите приложение с помощью Docker Compose:
 

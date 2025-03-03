@@ -10,12 +10,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Секретный ключ для подписи cookies и других целей безопасности.
 SECRET_KEY = os.getenv(
-    'SECRET_KEY',
+    'DJANGO_SECRET_KEY',
     'django-insecure-ky-$7g9_$ylp4pd194)6to@b-$*!n^ct9qfl$_k&wf@2+jy(xf'
 )
 
 # Режим отладки. Включает подробные ошибки и отключает кэширование.
-DEBUG = os.getenv('DEBUG', 'True').lower() == 'true'
+DEBUG = os.getenv('DJANGO_DEBUG', 'True').lower() == 'true'
 
 ALLOWED_HOSTS = ['*']
 

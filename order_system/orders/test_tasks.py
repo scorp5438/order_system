@@ -9,7 +9,22 @@ from orders.api.tasks import (order_creation,
 
 
 class CeleryTasksTestCase(TestCase):
+    """
+    Тестовый класс для проверки Celery задач, связанных с заказами.
+
+    Этот класс тестирует задачи Celery,
+    такие, как создание заказа, обновление статуса заказа,
+    а также обработку ошибок при невалидных данных.
+    """
+
     def test_order_creation(self):
+        """
+        Тест задачи создания заказа.
+
+        Проверяет, что при успешном создании заказа:
+        1. Отправляется email-уведомление.
+        2. Записывается лог с информацией о создании заказа.
+        """
         order_data = {
             'id': 1,
             'product_name': 'Laptop',
@@ -26,6 +41,13 @@ class CeleryTasksTestCase(TestCase):
                 mock_logger.assert_called_with('Заказ № 1 создан')
 
     def test_order_update_status(self):
+        """
+        Тест задачи обновления статуса заказа.
+
+        Проверяет, что при успешном обновлении статуса заказа:
+        1. Отправляется email-уведомление.
+        2. Записывается лог с информацией об изменении статуса.
+        """
         order_data = {
             'id': 1,
             'customer_email': 'test@example.com',
@@ -44,6 +66,12 @@ class CeleryTasksTestCase(TestCase):
                 )
 
     def test_order_creation_invalid_data(self):
+        """
+        Тест обработки ошибки при создании заказа с невалидными данными.
+
+        Проверяет, что при возникновении ошибки:
+        1. Записывается лог с сообщением об ошибке.
+        """
         error_message = 'Invalid data'
 
         with patch.object(
@@ -56,6 +84,12 @@ class CeleryTasksTestCase(TestCase):
             )
 
     def test_order_update_invalid_data(self):
+        """
+        Тест обработки ошибки при обновлении заказа с невалидными данными.
+
+        Проверяет, что при возникновении ошибки:
+        1. Записывается лог с сообщением об ошибке.
+        """
         error_message = 'Invalid data'
 
         with patch.object(

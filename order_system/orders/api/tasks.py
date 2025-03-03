@@ -1,4 +1,5 @@
 import logging
+from smtplib import SMTPException
 
 from celery import shared_task
 from django.conf import settings
@@ -39,7 +40,13 @@ def order_creation(order):
     )
 
     email.content_subtype = "html"
-    email.send()
+    try:
+        email.send()
+    except SMTPException as e:
+        logger_file.error(
+            f'Ошибка при отправки письма на почту'
+            f'{customer_email} по заказу {order_pk}: {str(e)}'
+        )
 
 
 @shared_task
@@ -71,7 +78,13 @@ def order_update_status(order):
     )
 
     email.content_subtype = "html"
-    email.send()
+    try:
+        email.send()
+    except SMTPException as e:
+        logger_file.error(
+            f'Ошибка при отправки письма на почту'
+            f'{customer_email} по заказу {order_pk}: {str(e)}'
+        )
 
 
 @shared_task
