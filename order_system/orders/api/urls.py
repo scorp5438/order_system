@@ -5,7 +5,8 @@ from .views import OrdersApiView
 
 router = DefaultRouter()
 app_name = 'orders'
-
+# Маршрут для отображения списка заказов
+# 1/orders/{pk} отображение заказа по id
 router.register('v1/orders', OrdersApiView, basename='orders')
 
 

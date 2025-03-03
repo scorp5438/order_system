@@ -17,7 +17,7 @@ SECRET_KEY = os.getenv(
 # Режим отладки. Включает подробные ошибки и отключает кэширование.
 DEBUG = os.getenv('DEBUG', 'True').lower() == 'true'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 INSTALLED_APPS = [
