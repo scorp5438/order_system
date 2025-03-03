@@ -3,7 +3,7 @@ from django.db import models
 from rest_framework.validators import ValidationError
 
 
-def valid_quantity_is_zero(quantity):
+def validate_quantity_is_zero(quantity):
     """
     Валидатор для проверки, что количество товара больше нуля.
 
@@ -44,7 +44,7 @@ class Orders(models.Model):
     )
     quantity = models.PositiveSmallIntegerField(
         default=1,
-        validators=[valid_quantity_is_zero],
+        validators=[validate_quantity_is_zero],
         verbose_name='Количество товара'
     )
     customer_email = models.EmailField(

@@ -1,11 +1,18 @@
 import logging
+import os
 from unittest import TestCase
 from unittest.mock import patch
+
+import django
 
 from orders.api.tasks import (order_creation,
                               order_update_status,
                               order_creation_invalid_data,
                               order_update_invalid_data)
+
+# Указываем путь к настройкам Django
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "order_system.settings")
+django.setup()
 
 
 class CeleryTasksTestCase(TestCase):
