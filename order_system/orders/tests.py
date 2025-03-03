@@ -215,7 +215,7 @@ class OrdersApiViewTestCase(TestCase):
 
         Проверяет, что возвращается статус 400 и сообщение об ошибке.
         """
-        self.data['quantity'] = '1'
+        self.data['quantity'] = ''
 
         response = self.client.post(
             reverse('orders:orders-list'),
