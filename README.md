@@ -79,15 +79,16 @@
 После запуска приложение будет доступно по следующим адресам:
 
 - **API**: [http://localhost:80/api/](http://localhost:80/api/)
-- **Админка**: [http://localhost:8000/admin/](http://localhost:8000/admin/)  
-  **Логин/пароль**: `admin/admin*`
+- **Админка**: [http://localhost:80/admin/](http://localhost:80/admin/)  
 
 `* ВАЖНО Чтобы зайти в админку необходимо находясь в корне проекта создать superuser. Команда:`
 
 ```bash
+  sudo docker ps
+  sudo docker exec -it {id контейнера fastapi} /bin/bash
   python manage.py createsuperuser
 ```
-`Далее задать логин и пароль например admin/admin`
+`Далее задать логин и пароль например admin/1234`
 
 
 ## 5. Остановка приложения
